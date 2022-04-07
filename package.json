@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hashgraph/sdk": "^2.11.3",
+    "framer-motion": "^6.2.8",
+    "ipfs-http-client": "^56.0.1",
     "next": "12.1.2",
     "react": "18.0.0",
     "react-dom": "18.0.0"
