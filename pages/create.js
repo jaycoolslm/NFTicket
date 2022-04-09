@@ -1,16 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import createAccount from '../hashgraph/createAccount';
 import checkBalance from '../hashgraph/checkBalance';
-import { mintNft, queryTokenSupply } from '../hashgraph/createNft';
-import getTokenInfo from '../hashgraph/getTokenInfo';
+import { createNft } from '../hashgraph/createNft';
 
-import { create } from 'ipfs-http-client'
 
 import Link from 'next/link';
 
 
-
-const Buy = () => {
+function Create() {
 
     // Output signup or signin
     const handleSignin = () => {
@@ -40,6 +37,7 @@ const Buy = () => {
 
         setInputId(String(accountDetails.newAccountId))
         setInputKey(String(accountDetails.newAccountPrivateKey))
+
     }
 
     const [getInputId, setInputId] = useState('')
@@ -47,32 +45,38 @@ const Buy = () => {
     const [getBalance, setBalance] = useState('')
 
 
-    // Get inputted token id to mint
-    const [getTokenId, setTokenId] = useState('')
-    const [getTokenObj, setTokenObj] = useState({})
+    // handle NFT inputs
+    const [getTokenName, setTokenName] = useState('')
+    const [getTokenSymbol, setTokenSymbol] = useState('')
+    const [getMaxSupply, setMaxSupply] = useState(0)
 
-    // stringify NFT Mint details prior to ipfs upload
-    const [getMintObj, setMintObj] = useState({})
+    // store token ID after createNft() called
+    const [getTokenId, setTokenId] = useState('')
+    const [getTokenObject, setTokenObject] = useState(undefined)
+
 
     return (
         <>
             <div className='landing'>
                 <nav>
                     <ul>
-                        <Link href='/create'>
-                            <a className='unactive'>Create</a>
-                        </Link>
-                        <Link href='#'>
-                            <a className="active">Buy</a>
-                        </Link>
                         <Link href='/'>
                             <a className='unactive'>Home</a>
                         </Link>
+                        <Link href='#'>
+                            <a className="active">Create</a>
+                        </Link>
+                        <Link href='/buy'>
+                            <a className='unactive'>Buy</a>
+                        </Link>
                     </ul>
                 </nav>
+
+
             </div>
+
         </>
-        // <div className='top-container'>
+        // <div className="top-container">
 
 
         //     <h1>NFT Events</h1>
@@ -117,6 +121,9 @@ const Buy = () => {
         //             <p>Your private key is: {getInputKey}</p>
         //         </div>
         //     </div>
+
+        //     <br></br>
+
         //     <div className='after-auth'>
         //         {/* CHECK BALANCE */}
         //         <button onClick={async (e) => {
@@ -137,58 +144,50 @@ const Buy = () => {
 
         //         <p>The requested balance is {getBalance}</p>
 
-        //         {/* ADD RELEVANT METADATA TO IPFS */}
 
+        //         {/* CREATE NFTicket EVENT */}
+        //         <h2>Want to create an event?</h2>
+        //         <p>Use our NFT service for the ultimate ticket solution</p>
+        //         <form>
+        //             <div>
+        //                 <label>Ticket Name</label>
+        //                 <input type='text' onChange={(e) => setTokenName(e.target.value)} />
+        //             </div>
 
-        //         <h3>Mint your NFT</h3>
-        //         <p>You must mint the NFT for the event you want to go to!</p>
+        //             <div>
+        //                 <label>Ticket Symbol</label>
+        //                 <input type='text' onChange={(e) => setTokenSymbol(e.target.value)} />
+        //             </div>
 
-        //         <div>
-        //             <input type='text' placeholder='Token ID' onChange={(e) => setTokenId(e.target.value)} />
-        //             <button onClick={async () => {
-        //                 const tokenObjInfo = await getTokenInfo(getTokenId)
-        //                 setTokenObj(tokenObjInfo)
+        //             <div>
+        //                 <label>Maximum Supply</label>
+        //                 <input type='number' onChange={(e) => setMaxSupply(e.target.value)} />
+        //             </div>
 
-        //                 setMintObj({
-        //                     date: '01/05/2022',
-        //                     eventId: getTokenId,
-        //                     number: Number(tokenObjInfo.totalSupply)
-        //                 })
-
-        //                 var tokenInfo = document.getElementById('token-info')
-        //                 tokenInfo.style.display = 'block'
-        //             }}>Get info</button>
-        //         </div>
-
-        //         <div id='token-info'>
-        //             <button onClick={() => {
-        //                 const tokenName = getTokenObj.name
-        //                 var eventName = document.getElementById('event-name')
-        //                 eventName.innerHTML = `The name is ${tokenName}`
-        //             }}>Event name</button>
-        //             <p id='event-name'></p>
-        //         </div>
-
+        //         </form>
         //         <button onClick={async () => {
-        //             const json = JSON.stringify(getMintObj)
+        //             var error = document.querySelector('.createnft-err')
+        //             if (getTokenName !== '' && getMaxSupply !== 0) {
+        //                 error.style.display = 'none'
+        //                 const tokenId = await createNft(getTokenName, getTokenSymbol, getMaxSupply, getInputId, getInputKey)
+        //                 setTokenId(String(tokenId))
+        //                 setTokenObject(tokenId)
 
-        //             if (json) {
-        //                 try {
-        //                     const ipfs = create('http://127.0.0.1:5001/api/v0')
-        //                     console.log(json)
-        //                     const { cid } = await ipfs.add(json)
-        //                     console.log(String(cid))
-        //                     mintNft(getTokenId, cid, getInputId, getInputKey)
-        //                 } catch (e) {
-        //                     console.error(e)
-        //                 }
+        //                 var success = document.querySelector('.createnft-suc')
+        //                 success.style.display = 'block'
         //             } else {
-        //                 alert("No object submitted. Please try again.");
+        //                 error.style.display = 'block'
         //             }
-        //         }}>Mint</button>
+        //         }}>Create</button>
+
+        //         <p className='createnft-err failure'>You have not entered in all the details</p>
+        //         <p className='createnft-suc success'>NFT event successfully made!</p>
+        //         <p className='token-id'>Your NFT ID is:{getTokenId}</p>
         //     </div>
-        // </div>
-    )
+        // </div >
+    );
 }
 
-export default Buy
+
+
+export default Create;

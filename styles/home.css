@@ -13,7 +13,7 @@
     color: var(--pri-light);
 }
 
-.landing nav ul {
+nav ul {
     width: 100vw;
     height: 10vh;
     display: flex;
@@ -21,7 +21,7 @@
     align-items: center;
 }
 
-.landing nav ul a {
+nav ul a {
     margin: 0 5vw;
     text-decoration: none;
     border-bottom: var(--tert) 2px solid;
