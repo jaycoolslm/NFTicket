@@ -3,11 +3,37 @@ import createAccount from '../hashgraph/createAccount';
 import checkBalance from '../hashgraph/checkBalance';
 import { createNft } from '../hashgraph/createNft';
 
+import events from '../images/events.svg'
+import membership from '../images/membership.svg'
+import raffle from '../images/raffle.svg'
+import vip from '../images/vip.svg'
 
 import Link from 'next/link';
+import Image from 'next/image'
+
+import { motion } from 'framer-motion'
 
 
 function Create() {
+
+    // animation for create choices
+    const container = {
+        hidden: {},
+        show: {
+            transition: {
+                staggerChildren: 2,
+            }
+        }
+    }
+
+    const item = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { duration: 1 } }
+    }
+
+
+    // handle render after user click
+    const [getChoice, setChoice] = useState('')
 
     // Output signup or signin
     const handleSignin = () => {
@@ -72,8 +98,39 @@ function Create() {
                     </ul>
                 </nav>
 
-
+                <motion.div
+                    variants={container}
+                    initial='hidden'
+                    animate='show'
+                    className='create-select'
+                >
+                    <motion.div variants={item} onClick={() => setChoice('event')}>
+                        <h2>Event Tickets</h2>
+                        <Image src={events} alt='NFT Events' layout='responsive' />
+                    </motion.div>
+                    <motion.div variants={item}>
+                        <h2>Private Clubs</h2>
+                        <Image src={vip} alt='NFT Private Clubs' layout='responsive' />
+                    </motion.div>
+                    <motion.div variants={item}>
+                        <h2>Raffles</h2>
+                        <Image src={raffle} alt='NFT Raffle' layout='responsive' />
+                    </motion.div>
+                    <motion.div variants={item}>
+                        <h2>Memberships</h2>
+                        <Image src={membership} alt='NFT Memberships' layout='responsive' />
+                    </motion.div>
+                </motion.div>
             </div>
+
+
+            {
+                renderChoice(getChoice)
+            }
+
+            {/* <div className='create-event'>
+                <h1>You see me bitch</h1>
+            </div> */}
 
         </>
         // <div className="top-container">
@@ -188,6 +245,19 @@ function Create() {
     );
 }
 
+
+const renderChoice = (choice) => {
+    switch (choice) {
+        case 'event':
+            return (
+                <h1>Ya see me bitch</h1>
+            )
+        default:
+            return (
+                <></>
+            )
+    }
+}
 
 
 export default Create;

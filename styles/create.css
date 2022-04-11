@@ -1,0 +1,24 @@
+:root {
+    --pri-dark: #02000d;
+    --sec-dark: #07203f;
+    --pri-light: #d9aa90;
+    --sec-light: #f1d2b2;
+    --tert: #a65e46;
+}
+
+.create-select {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.create-select div {
+    margin-top: 30px;
+    width: 40vw;
+    max-width: 375px;
+    margin-bottom: 50px;
+}
+
+.create-select div h2 {
+    text-align: center;
+}
